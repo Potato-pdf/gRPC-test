@@ -8,6 +8,7 @@ import (
 
 	"github.com/charizardbellako/ping/pb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type server struct {
@@ -23,7 +24,7 @@ func (s *server) SendPing(ctx context.Context, req *pb.PingRequest) (*pb.PingRes
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", ":50052")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -31,7 +32,10 @@ func main() {
 	s := grpc.NewServer()
 	pb.RegisterPingPongServiceServer(s, &server{})
 
-	log.Println("Server started on :50051")
+	// Habilitar reflection para herramientas como Postman, grpcurl, etc.
+	reflection.Register(s)
+
+	log.Println("Server started on :50052 (gRPC Reflection enabled)")
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

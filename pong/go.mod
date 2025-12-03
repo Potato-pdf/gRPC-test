@@ -16,3 +16,5 @@ require (
 )
 
 replace github.com/charizardbellako/ping => ../ping
+
+replace github.com/charizadbellako/ping => ../ping

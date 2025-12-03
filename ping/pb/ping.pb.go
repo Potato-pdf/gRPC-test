@@ -24,6 +24,7 @@ const (
 type PingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Id            int32                  `protobuf:"varint,2,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,9 +66,18 @@ func (x *PingRequest) GetMessage() string {
 	return ""
 }
 
+func (x *PingRequest) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
 type PingResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Success       bool                   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
+	Timestamp     string                 `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -109,18 +119,35 @@ func (x *PingResponse) GetMessage() string {
 	return ""
 }
 
+func (x *PingResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *PingResponse) GetTimestamp() string {
+	if x != nil {
+		return x.Timestamp
+	}
+	return ""
+}
+
 var File_ping_proto protoreflect.FileDescriptor
 
 const file_ping_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"ping.proto\x12\x04ping\"'\n" +
+	"ping.proto\x12\x04ping\"7\n" +
 	"\vPingRequest\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage\"(\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\x05R\x02id\"`\n" +
 	"\fPingResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2>\n" +
-	"\vPingService\x12/\n" +
-	"\x04Ping\x12\x11.ping.PingRequest\x1a\x12.ping.PingResponse\"\x00B%Z#github.com/charizardbellako/ping/pbb\x06proto3"
+	"\amessage\x18\x01 \x01(\tR\amessage\x12\x18\n" +
+	"\asuccess\x18\x02 \x01(\bR\asuccess\x12\x1c\n" +
+	"\ttimestamp\x18\x03 \x01(\tR\ttimestamp2F\n" +
+	"\x0fPingPongService\x123\n" +
+	"\bSendPing\x12\x11.ping.PingRequest\x1a\x12.ping.PingResponse\"\x00B%Z#github.com/charizardbellako/ping/pbb\x06proto3"
 
 var (
 	file_ping_proto_rawDescOnce sync.Once
@@ -140,8 +167,8 @@ var file_ping_proto_goTypes = []any{
 	(*PingResponse)(nil), // 1: ping.PingResponse
 }
 var file_ping_proto_depIdxs = []int32{
-	0, // 0: ping.PingService.Ping:input_type -> ping.PingRequest
-	1, // 1: ping.PingService.Ping:output_type -> ping.PingResponse
+	0, // 0: ping.PingPongService.SendPing:input_type -> ping.PingRequest
+	1, // 1: ping.PingPongService.SendPing:output_type -> ping.PingResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

@@ -19,101 +19,101 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PingService_Ping_FullMethodName = "/ping.PingService/Ping"
+	PingPongService_SendPing_FullMethodName = "/ping.PingPongService/SendPing"
 )
 
-// PingServiceClient is the client API for PingService service.
+// PingPongServiceClient is the client API for PingPongService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type PingServiceClient interface {
-	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+type PingPongServiceClient interface {
+	SendPing(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
 }
 
-type pingServiceClient struct {
+type pingPongServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewPingServiceClient(cc grpc.ClientConnInterface) PingServiceClient {
-	return &pingServiceClient{cc}
+func NewPingPongServiceClient(cc grpc.ClientConnInterface) PingPongServiceClient {
+	return &pingPongServiceClient{cc}
 }
 
-func (c *pingServiceClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error) {
+func (c *pingPongServiceClient) SendPing(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PingResponse)
-	err := c.cc.Invoke(ctx, PingService_Ping_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, PingPongService_SendPing_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// PingServiceServer is the server API for PingService service.
-// All implementations must embed UnimplementedPingServiceServer
+// PingPongServiceServer is the server API for PingPongService service.
+// All implementations must embed UnimplementedPingPongServiceServer
 // for forward compatibility.
-type PingServiceServer interface {
-	Ping(context.Context, *PingRequest) (*PingResponse, error)
-	mustEmbedUnimplementedPingServiceServer()
+type PingPongServiceServer interface {
+	SendPing(context.Context, *PingRequest) (*PingResponse, error)
+	mustEmbedUnimplementedPingPongServiceServer()
 }
 
-// UnimplementedPingServiceServer must be embedded to have
+// UnimplementedPingPongServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedPingServiceServer struct{}
+type UnimplementedPingPongServiceServer struct{}
 
-func (UnimplementedPingServiceServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+func (UnimplementedPingPongServiceServer) SendPing(context.Context, *PingRequest) (*PingResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SendPing not implemented")
 }
-func (UnimplementedPingServiceServer) mustEmbedUnimplementedPingServiceServer() {}
-func (UnimplementedPingServiceServer) testEmbeddedByValue()                     {}
+func (UnimplementedPingPongServiceServer) mustEmbedUnimplementedPingPongServiceServer() {}
+func (UnimplementedPingPongServiceServer) testEmbeddedByValue()                         {}
 
-// UnsafePingServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to PingServiceServer will
+// UnsafePingPongServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to PingPongServiceServer will
 // result in compilation errors.
-type UnsafePingServiceServer interface {
-	mustEmbedUnimplementedPingServiceServer()
+type UnsafePingPongServiceServer interface {
+	mustEmbedUnimplementedPingPongServiceServer()
 }
 
-func RegisterPingServiceServer(s grpc.ServiceRegistrar, srv PingServiceServer) {
-	// If the following call panics, it indicates UnimplementedPingServiceServer was
+func RegisterPingPongServiceServer(s grpc.ServiceRegistrar, srv PingPongServiceServer) {
+	// If the following call panics, it indicates UnimplementedPingPongServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&PingService_ServiceDesc, srv)
+	s.RegisterService(&PingPongService_ServiceDesc, srv)
 }
 
-func _PingService_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _PingPongService_SendPing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PingRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PingServiceServer).Ping(ctx, in)
+		return srv.(PingPongServiceServer).SendPing(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: PingService_Ping_FullMethodName,
+		FullMethod: PingPongService_SendPing_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PingServiceServer).Ping(ctx, req.(*PingRequest))
+		return srv.(PingPongServiceServer).SendPing(ctx, req.(*PingRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// PingService_ServiceDesc is the grpc.ServiceDesc for PingService service.
+// PingPongService_ServiceDesc is the grpc.ServiceDesc for PingPongService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var PingService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "ping.PingService",
-	HandlerType: (*PingServiceServer)(nil),
+var PingPongService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "ping.PingPongService",
+	HandlerType: (*PingPongServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Ping",
-			Handler:    _PingService_Ping_Handler,
+			MethodName: "SendPing",
+			Handler:    _PingPongService_SendPing_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

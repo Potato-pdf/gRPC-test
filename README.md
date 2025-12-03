@@ -163,6 +163,51 @@ func (s *server) SendPing(ctx context.Context, req *pb.PingRequest) (*pb.PingRes
 }
 ```
 
+## 🧪 Testing Manual
+
+El proyecto incluye soporte completo para testing manual con diversas herramientas:
+
+### Opción 1: Postman (Recomendado para beginners)
+```bash
+# 1. Inicia el servidor
+cd ping && ./start-server.sh
+
+# 2. Abre Postman (v9.7+)
+# 3. Nueva petición gRPC → localhost:50051
+# 4. Selecciona ping.PingPongService/SendPing
+```
+
+📖 **[Ver guía completa de Postman](POSTMAN-GUIDE.md)**
+
+### Opción 2: grpcurl (Herramienta CLI)
+```bash
+# Instalar grpcurl (solo una vez)
+go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+
+# Listar servicios disponibles
+grpcurl -plaintext localhost:50051 list
+
+# Hacer una petición
+grpcurl -plaintext \
+  -d '{"message": "Hello from grpcurl!", "id": 42}' \
+  localhost:50051 \
+  ping.PingPongService/SendPing
+
+# O usar el script de pruebas
+./test-grpcurl.sh
+```
+
+### Scripts de Testing Incluidos
+
+- `test-grpcurl.sh` - Pruebas básicas con grpcurl
+- `test-comprehensive.sh` - Suite completa de tests
+
+### Más información
+
+- 📖 **[Guía completa de Testing](TESTING.md)** - Todas las opciones disponibles
+- 📖 **[Guía de instalación](INSTALLATION.md)** - Instalar herramientas de testing
+- 📖 **[Guía de Postman](POSTMAN-GUIDE.md)** - Paso a paso con Postman
+
 ## 📚 Documentación Adicional
 
 - [README del servicio Ping](ping/README.md) - Detalles del servidor
